@@ -7,7 +7,7 @@ namespace PokemonReview.Repositories;
 public class PokemonRepo(ApiDBContext dBContext) : IPokemonRepo
 {
   private readonly ApiDBContext _dBContext = dBContext;
-  public ICollection<Pokemon> GetPokemons(byte page, byte pageSize)
+  public ICollection<Pokemon> GetPokemons(short page, short pageSize)
   {
     return _dBContext.Pokemons.OrderBy(p => p.Name).Skip((page - 1) * pageSize).Take(pageSize).ToList();
   }
@@ -25,4 +25,9 @@ public class PokemonRepo(ApiDBContext dBContext) : IPokemonRepo
     return pokemons.Select(p => p.Id).ToArray();
   }
 
+  public void UpdatePokemon(int id, Pokemon pokemon)
+  {
+    _dBContext.Pokemons.Update(pokemon);
+    _dBContext.SaveChanges();
+  }
 }

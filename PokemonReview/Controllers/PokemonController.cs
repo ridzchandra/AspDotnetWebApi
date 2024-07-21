@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using PokemonReview.Interfaces;
 using PokemonReview.Models;
 
@@ -16,8 +17,11 @@ public class PokemonController(IPokemonRepo pokemonRepo) : ControllerBase
 
   // Action Method to get all Pokemons
   [HttpGet]
-  public IActionResult GetPokemons([FromQuery] byte page, [FromQuery] byte pageSize)
+  public IActionResult GetPokemons([FromQuery] short page, [FromQuery] short pageSize)
   {
+    ArgumentOutOfRangeException.ThrowIfLessThan(page, 1, nameof(page));
+    ArgumentOutOfRangeException.ThrowIfLessThan(pageSize, 1, nameof(pageSize));
+
     var pokemons = _pokemonRepo.GetPokemons(page, pageSize);
     return pokemons.Count != 0 ? Ok(pokemons) : NotFound();
   }
@@ -38,5 +42,20 @@ public class PokemonController(IPokemonRepo pokemonRepo) : ControllerBase
   {
     var ids = _pokemonRepo.AddPokemons(pokemons);
     return Ok(ids);
+  }
+
+  [HttpPatch("{id}")]
+  public IActionResult UpdatePokemon(int id, JsonPatchDocument<Pokemon> pokemonUpdates)
+  {
+    var pokemon = _pokemonRepo.GetPokemon(id);
+    if (pokemon == null)
+    {
+      return NotFound();
+    }
+
+    pokemonUpdates.ApplyTo(pokemon);
+    _pokemonRepo.UpdatePokemon(id, pokemon);
+
+    return NoContent();
   }
 }
