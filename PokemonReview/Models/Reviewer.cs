@@ -2,14 +2,24 @@
 
 namespace PokemonReview.Models;
 
-public class Reviewer(string firstName)
+public class Reviewer
 {
-  // You don't have to make Id [Required] because you don't need this from the HTTP request
-  // It's auto generated in the database
   public int Id { get; set; }
+
   [Required]
-  public string FirstName { get; set; } = firstName;
+  public string? FirstName { get; set; }
+
   public string? LastName { get; set; }
   public virtual ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
 
+  // Parameterless constructor
+  public Reviewer()
+  {
+  }
+
+  // Constructor overload with 'firstName' parameter
+  public Reviewer(string firstName)
+  {
+    FirstName = firstName;
+  }
 }

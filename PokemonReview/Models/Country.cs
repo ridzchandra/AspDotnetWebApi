@@ -1,6 +1,17 @@
-﻿namespace PokemonReview.Models;
-
-public class Country(string name) : BaseEntity(name)
+﻿namespace PokemonReview.Models
 {
-  public virtual ICollection<Owner> Owners { get; set; } = new HashSet<Owner>();
+  public class Country : BaseEntity
+  {
+    public virtual ICollection<Owner> Owners { get; set; } = new HashSet<Owner>();
+
+    // Parameterless constructor
+    public Country()
+    {
+    }
+
+    // Constructor overload with 'name' parameter
+    public Country(string name) : base(name)
+    {
+    }
+  }
 }
