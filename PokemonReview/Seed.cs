@@ -3,13 +3,13 @@ using PokemonReview.Models;
 
 namespace PokemonReview;
 
-public class Seed(ApiDBContext context)
+public class Seed(PokemonReviewDBContext context)
 {
-  private readonly ApiDBContext _apiDBContext = context;
+  private readonly PokemonReviewDBContext _PokemonReviewDBContext = context;
 
-  public void SeedApiDBContext()
+  public void SeedPokemonReviewDBContext()
   {
-    if (!_apiDBContext.Pokemons.Any())
+    if (!_PokemonReviewDBContext.Pokemons.Any())
     {
       // seed pokemons
       var pikachu = new Pokemon("Pikachu") { BirthDate = new DateTime(1903, 1, 1, 0, 0, 0, DateTimeKind.Utc) };
@@ -92,8 +92,8 @@ public class Seed(ApiDBContext context)
         Reviewer = new Reviewer("Jessica")
       });
 
-      _apiDBContext.Pokemons.AddRange(pikachu, squirtle, venasuar);
-      _apiDBContext.SaveChanges();
+      _PokemonReviewDBContext.Pokemons.AddRange(pikachu, squirtle, venasuar);
+      _PokemonReviewDBContext.SaveChanges();
     }
   }
 }

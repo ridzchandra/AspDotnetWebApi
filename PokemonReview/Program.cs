@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using PokemonReview.Data;
 using PokemonReview;
-using PokemonReview.Interfaces;
-using PokemonReview.Repositories;
+using PokemonReview.DataAccess;
+using PokemonReview.DataAccess.Interfaces;
+using PokemonReview.DataAccess.Repos;
 
 
 
@@ -18,8 +18,9 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new() { Title = "PokemonReview", Version = "v1", });
 
 }).AddSwaggerGenNewtonsoftSupport();
-builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDBContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("PokemonReviewDbConnection")));
+builder.Services.AddEntityFrameworkNpgsql().AddDbContext<PokemonReviewDBContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("PokemonReviewDbConnection")));
 
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPokemonRepo, PokemonRepo>();
 
 var app = builder.Build();
@@ -34,7 +35,7 @@ static void SeedData(IHost app)
     using (var scope = scopedFactory!.CreateScope())
     {
         var service = scope.ServiceProvider.GetService<Seed>();
-        service!.SeedApiDBContext();
+        service!.SeedPokemonReviewDBContext();
     }
 }
 

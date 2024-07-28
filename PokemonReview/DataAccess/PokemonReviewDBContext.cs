@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PokemonReview.Models;
 
-namespace PokemonReview.Data;
+namespace PokemonReview.DataAccess;
 
-public class ApiDBContext(DbContextOptions<ApiDBContext> options) : DbContext(options)
+public class PokemonReviewDBContext(DbContextOptions<PokemonReviewDBContext> options) : DbContext(options)
 {
   public DbSet<Reviewer> Reviewers { get; set; } = null!;
   public DbSet<Review> Reviews { get; set; } = null!;

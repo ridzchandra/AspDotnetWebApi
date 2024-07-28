@@ -10,8 +10,8 @@ using PokemonReview.Data;
 
 namespace PokemonReview.Migrations
 {
-    [DbContext(typeof(ApiDBContext))]
-    partial class ApiDBContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(PokemonReviewDBContext))]
+    partial class PokemonReviewDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

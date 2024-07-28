@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using PokemonReview.Interfaces;
+using PokemonReview.DataAccess.Interfaces;
 using PokemonReview.Models;
 
 namespace PokemonReview.Controllers;
@@ -10,20 +10,29 @@ namespace PokemonReview.Controllers;
 // The route for this controller is api/Pokemon = controller level routing
 [Route("api/[controller]")]
 [ApiController]
-public class PokemonController(IPokemonRepo pokemonRepo) : ControllerBase
+public class PokemonController(IUnitOfWork unitOfWork) : ControllerBase
 {
-  private readonly IPokemonRepo _pokemonRepo = pokemonRepo;
+  private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
 
   // Action Method to get all Pokemons
   [HttpGet]
-  public IActionResult GetPokemons([FromQuery] short page, [FromQuery] short pageSize)
+  public async Task<IActionResult> GetPokemons([FromQuery] short page, [FromQuery] short pageSize, [FromQuery] string gym)
   {
     ArgumentOutOfRangeException.ThrowIfLessThan(page, 1, nameof(page));
     ArgumentOutOfRangeException.ThrowIfLessThan(pageSize, 1, nameof(pageSize));
 
-    var pokemons = _pokemonRepo.GetPokemons(page, pageSize);
-    return pokemons.Count != 0 ? Ok(pokemons) : NotFound();
+    if (!string.IsNullOrWhiteSpace(gym))
+    {
+      var pokemonsFromGym = await _unitOfWork.Pokemons.GetPokemonsWithOwnersFromGym(page, pageSize, gym);
+      await _unitOfWork.CompleteAsync();
+      return pokemonsFromGym.Any() ? Ok(pokemonsFromGym) : NotFound();
+    }
+
+    // var pokemons = _pokemonRepo.GetPokemons(page, pageSize);
+    var pokemons = await _unitOfWork.Pokemons.GetAllAsync(page, pageSize);
+    await _unitOfWork.CompleteAsync();
+    return pokemons.Any() ? Ok(pokemons) : NotFound();
   }
 
   // Action Method to get a Pokemon by Id
@@ -31,31 +40,32 @@ public class PokemonController(IPokemonRepo pokemonRepo) : ControllerBase
   // {} is the notation for a path parameter.
   // Without {} the route would be just the string appended to the controller route in this case api/Pokemon/id
   [HttpGet("{id}")]
-  public IActionResult GetPokemon(int id)
+  public async Task<IActionResult> GetPokemon(int id)
   {
-    var pokemon = _pokemonRepo.GetPokemon(id);
+    var pokemon = await _unitOfWork.Pokemons.GetByIdAsync(id);
+    await _unitOfWork.CompleteAsync();
     return pokemon != null ? Ok(pokemon) : NotFound();
   }
 
   [HttpPost]
-  public IActionResult AddPokemons([FromBody] Pokemon[] pokemons)
+  public async Task<IActionResult> AddPokemons([FromBody] Pokemon[] pokemons)
   {
-    var ids = _pokemonRepo.AddPokemons(pokemons);
-    return Ok(ids);
+    await _unitOfWork.Pokemons.AddRangeAsync(pokemons);
+    await _unitOfWork.CompleteAsync();
+    return NoContent();
   }
 
   [HttpPatch("{id}")]
-  public IActionResult UpdatePokemon(int id, JsonPatchDocument<Pokemon> pokemonUpdates)
+  public async Task<IActionResult> UpdatePokemon(int id, JsonPatchDocument<Pokemon> pokemonUpdates)
   {
-    var pokemon = _pokemonRepo.GetPokemon(id);
+    var pokemon = await _unitOfWork.Pokemons.GetByIdAsync(id);
     if (pokemon == null)
     {
       return NotFound();
     }
 
     pokemonUpdates.ApplyTo(pokemon);
-    _pokemonRepo.UpdatePokemon(id, pokemon);
-
+    await _unitOfWork.CompleteAsync();
     return NoContent();
   }
 }

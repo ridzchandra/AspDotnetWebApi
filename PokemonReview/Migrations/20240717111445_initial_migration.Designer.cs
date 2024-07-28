@@ -11,7 +11,7 @@ using PokemonReview.Data;
 
 namespace PokemonReview.Migrations
 {
-    [DbContext(typeof(ApiDBContext))]
+    [DbContext(typeof(PokemonReviewDBContext))]
     [Migration("20240717111445_initial_migration")]
     partial class initial_migration
     {
