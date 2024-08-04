@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "3inyKS3Hk0M=",
+  "dgSpecHash": "xVbG2WZozzI=",
   "success": true,
   "projectFilePath": "/Users/rballa/Desktop/dev/AspDotnetWebApi/PokemonReview/PokemonReview.csproj",
   "expectedPackageFiles": [
+    "/Users/rballa/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
+    "/Users/rballa/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "/Users/rballa/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/rballa/.nuget/packages/microsoft.aspnetcore.jsonpatch/8.0.7/microsoft.aspnetcore.jsonpatch.8.0.7.nupkg.sha512",
     "/Users/rballa/.nuget/packages/microsoft.aspnetcore.mvc.newtonsoftjson/8.0.7/microsoft.aspnetcore.mvc.newtonsoftjson.8.0.7.nupkg.sha512",

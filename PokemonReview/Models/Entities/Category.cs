@@ -1,15 +1,15 @@
-﻿namespace PokemonReview.Models;
+﻿namespace PokemonReview.Models.Entities;
 
 public class Category : BaseEntity
 {
   public virtual ICollection<Pokemon> Pokemons { get; set; } = new HashSet<Pokemon>();
 
-  // Parameterless constructor
-  public Category()
+  // Private parameterless constructor for EF Core// Parameterless constructor 
+  private Category()
   {
   }
 
-  // Constructor overload with 'name' parameter
+  // Public constructor for application code
   public Category(string name) : base(name)
   {
   }

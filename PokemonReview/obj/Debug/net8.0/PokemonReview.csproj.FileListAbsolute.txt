@@ -109,3 +109,8 @@
 /Users/rballa/Desktop/dev/AspDotnetWebApi/PokemonReview/bin/Debug/net8.0/Newtonsoft.Json.dll
 /Users/rballa/Desktop/dev/AspDotnetWebApi/PokemonReview/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
 /Users/rballa/Desktop/dev/AspDotnetWebApi/PokemonReview/bin/Debug/net8.0/Swashbuckle.AspNetCore.Newtonsoft.dll
+/Users/rballa/Desktop/dev/AspDotnetWebApi/PokemonReview/obj/Debug/net8.0/PokemonReview.sourcelink.json
+/Users/rballa/Desktop/dev/AspDotnetWebApi/PokemonReview/bin/Debug/net8.0/AutoMapper.dll
+/Users/rballa/Desktop/dev/AspDotnetWebApi/PokemonReview/bin/Debug/net8.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/Users/rballa/Desktop/dev/AspDotnetWebApi/PokemonReview/bin/Debug/net8.0/DataAccess.dll
+/Users/rballa/Desktop/dev/AspDotnetWebApi/PokemonReview/bin/Debug/net8.0/DataAccess.pdb

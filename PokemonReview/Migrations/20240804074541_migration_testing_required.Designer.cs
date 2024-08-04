@@ -12,8 +12,8 @@ using PokemonReview.DataAccess;
 namespace PokemonReview.Migrations
 {
     [DbContext(typeof(PokemonReviewDBContext))]
-    [Migration("20240717111445_initial_migration")]
-    partial class initial_migration
+    [Migration("20240804074541_migration_testing_required")]
+    partial class migration_testing_required
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

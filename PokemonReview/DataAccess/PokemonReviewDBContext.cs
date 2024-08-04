@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PokemonReview.Models;
+using PokemonReview.Models.Entities;
 
 namespace PokemonReview.DataAccess;
 

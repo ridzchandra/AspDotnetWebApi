@@ -1,23 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PokemonReview.Models;
+namespace PokemonReview.Models.Entities;
 
 public class Reviewer
 {
   public int Id { get; set; }
 
   [Required]
-  public string? FirstName { get; set; }
+  public string FirstName { get; set; } = null!;
 
   public string? LastName { get; set; }
   public virtual ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
 
-  // Parameterless constructor
-  public Reviewer()
+  // Private parameterless constructor for EF Core
+  private Reviewer()
   {
   }
 
-  // Constructor overload with 'firstName' parameter
+  // Public constructor for application code
   public Reviewer(string firstName)
   {
     FirstName = firstName;

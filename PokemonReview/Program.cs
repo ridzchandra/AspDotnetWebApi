@@ -3,6 +3,7 @@ using PokemonReview;
 using PokemonReview.DataAccess;
 using PokemonReview.DataAccess.Interfaces;
 using PokemonReview.DataAccess.Repos;
+using PokemonReview.Models.Entities;
 
 
 
@@ -22,6 +23,8 @@ builder.Services.AddEntityFrameworkNpgsql().AddDbContext<PokemonReviewDBContext>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPokemonRepo, PokemonRepo>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
@@ -51,7 +54,6 @@ else
 {
     app.UseExceptionHandler("/error"); // Middleware for exception handling in production mode.
 }
-
 
 app.UseHttpsRedirection();
 

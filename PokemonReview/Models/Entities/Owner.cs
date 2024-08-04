@@ -1,4 +1,6 @@
-﻿namespace PokemonReview.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace PokemonReview.Models.Entities;
 
 public class Owner : BaseEntity
 {
@@ -6,12 +8,12 @@ public class Owner : BaseEntity
   public virtual Country? Country { get; set; }
   public virtual ICollection<Pokemon> Pokemons { get; set; } = new HashSet<Pokemon>();
 
-  // Parameterless constructor
-  public Owner()
+  // Private parameterless constructor for EF Core
+  private Owner()
   {
   }
 
-  // Constructor overload with 'name' parameter
+  // Public constructor for application code
   public Owner(string name) : base(name)
   {
   }

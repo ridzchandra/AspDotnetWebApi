@@ -1,5 +1,5 @@
-﻿using PokemonReview.Data;
-using PokemonReview.Models;
+﻿using PokemonReview.DataAccess;
+using PokemonReview.Models.Entities;
 
 namespace PokemonReview;
 

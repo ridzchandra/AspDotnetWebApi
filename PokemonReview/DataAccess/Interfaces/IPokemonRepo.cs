@@ -1,5 +1,5 @@
 ﻿using DataAccess.Generics;
-using PokemonReview.Models;
+using PokemonReview.Models.Entities;
 
 namespace PokemonReview.DataAccess.Interfaces;
 

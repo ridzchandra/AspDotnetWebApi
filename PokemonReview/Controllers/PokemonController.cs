@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using PokemonReview.DataAccess.Interfaces;
-using PokemonReview.Models;
+using PokemonReview.Models.Dtos.Responses;
+using PokemonReview.Models.Entities;
 
 namespace PokemonReview.Controllers;
 
@@ -10,14 +12,15 @@ namespace PokemonReview.Controllers;
 // The route for this controller is api/Pokemon = controller level routing
 [Route("api/[controller]")]
 [ApiController]
-public class PokemonController(IUnitOfWork unitOfWork) : ControllerBase
+public class PokemonController(IUnitOfWork unitOfWork, IMapper mapper) : ControllerBase
 {
   private readonly IUnitOfWork _unitOfWork = unitOfWork;
+  private readonly IMapper _mapper = mapper;
 
 
   // Action Method to get all Pokemons
   [HttpGet]
-  public async Task<IActionResult> GetPokemons([FromQuery] short page, [FromQuery] short pageSize, [FromQuery] string gym)
+  public async Task<IActionResult> GetPokemons([FromQuery] short page, [FromQuery] short pageSize, [FromQuery] string? gym = null)
   {
     ArgumentOutOfRangeException.ThrowIfLessThan(page, 1, nameof(page));
     ArgumentOutOfRangeException.ThrowIfLessThan(pageSize, 1, nameof(pageSize));
@@ -25,14 +28,16 @@ public class PokemonController(IUnitOfWork unitOfWork) : ControllerBase
     if (!string.IsNullOrWhiteSpace(gym))
     {
       var pokemonsFromGym = await _unitOfWork.Pokemons.GetPokemonsWithOwnersFromGym(page, pageSize, gym);
+      var pokemonDtosFromGym = _mapper.Map<IEnumerable<GetPokemonWithOwnerDto>>(pokemonsFromGym);
       await _unitOfWork.CompleteAsync();
-      return pokemonsFromGym.Any() ? Ok(pokemonsFromGym) : NotFound();
+      return pokemonDtosFromGym.Any() ? Ok(pokemonDtosFromGym) : NotFound();
     }
 
     // var pokemons = _pokemonRepo.GetPokemons(page, pageSize);
     var pokemons = await _unitOfWork.Pokemons.GetAllAsync(page, pageSize);
+    var pokemonDtos = _mapper.Map<IEnumerable<GetPokemonDto>>(pokemons);
     await _unitOfWork.CompleteAsync();
-    return pokemons.Any() ? Ok(pokemons) : NotFound();
+    return pokemonDtos.Any() ? Ok(pokemonDtos) : NotFound();
   }
 
   // Action Method to get a Pokemon by Id
@@ -43,13 +48,15 @@ public class PokemonController(IUnitOfWork unitOfWork) : ControllerBase
   public async Task<IActionResult> GetPokemon(int id)
   {
     var pokemon = await _unitOfWork.Pokemons.GetByIdAsync(id);
+    var pokemonDto = _mapper.Map<GetPokemonDto>(pokemon);
     await _unitOfWork.CompleteAsync();
-    return pokemon != null ? Ok(pokemon) : NotFound();
+    return pokemonDto != null ? Ok(pokemonDto) : NotFound();
   }
 
   [HttpPost]
-  public async Task<IActionResult> AddPokemons([FromBody] Pokemon[] pokemons)
+  public async Task<IActionResult> AddPokemons([FromBody] AddPokemonDto[] pokemonDtos)
   {
+    var pokemons = _mapper.Map<IEnumerable<Pokemon>>(pokemonDtos);
     await _unitOfWork.Pokemons.AddRangeAsync(pokemons);
     await _unitOfWork.CompleteAsync();
     return NoContent();

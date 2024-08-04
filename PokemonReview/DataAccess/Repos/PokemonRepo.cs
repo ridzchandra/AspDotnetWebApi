@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DataAccess.Generics;
 using PokemonReview.DataAccess.Interfaces;
-using PokemonReview.Models;
+using PokemonReview.Models.Entities;
 
 namespace PokemonReview.DataAccess.Repos;
 
